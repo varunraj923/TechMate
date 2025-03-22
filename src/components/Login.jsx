@@ -3,17 +3,19 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userSlice';
 import { useNavigate } from 'react-router-dom';
+import { BASEURL } from '../utils/constants';
 
 
 const Login = () => {
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
+  const [Error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLoginSubmit = async () => {
     try {
-      const response = await axios.post("http://localhost:7777/login", {
+      const response = await axios.post(BASEURL+"login", {
         emailId, 
         password,
        
@@ -24,7 +26,8 @@ const Login = () => {
      
       
     } catch (err) {
-      console.error('Login Failed:', err.response?.data || err.message);
+      console.error('Login Failed:', err);
+      setError(err.response.data);
       
     }
   };
@@ -58,6 +61,7 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+        <p className='text-red-600 mt-2'>{Error}</p>
       </div>
 
       <button
