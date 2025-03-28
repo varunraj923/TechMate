@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { addUser } from '../utils/userSlice';
-import { useNavigate } from 'react-router-dom';
-import { BASEURL } from '../utils/constants';
-
+import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { BASEURL } from "../utils/constants";
+import { addUser } from "../utils/userSlice";
+import LoginBg from "../utils/LoginBg.jpg";
 
 const Login = () => {
   const [emailId, setEmailId] = useState("");
@@ -15,63 +15,63 @@ const Login = () => {
 
   const handleLoginSubmit = async () => {
     try {
-      const response = await axios.post(BASEURL+"login", {
-        emailId, 
-        password,
-       
-      }, {withCredentials : true});
-      console.log(response.data)
+      const response = await axios.post(
+        BASEURL + "login",
+        { emailId, password },
+        { withCredentials: true }
+      );
+      console.log(response.data);
       dispatch(addUser(response.data));
       navigate("/");
-     
-      
     } catch (err) {
-      console.error('Login Failed:', err);
-      setError(err.response.data);
-      
+      console.error("Login Failed:", err);
+      setError(err.response?.data || "Login failed. Please try again.");
     }
   };
 
   return (
-    <div className='ml-120 p-8 w-96 bg-white mt-15 shadow-2xl rounded-2xl h-1/2'>
-      <h1 className='text-3xl font-bold text-center'>Login</h1>
+    <div
+      className="flex items-center justify-center min-h-screen bg-cover bg-center"
+      style={{ backgroundImage: `url(${LoginBg})` }}
+    >
+      <div className="bg-white p-8 rounded-2xl shadow-lg w-96 text-center backdrop-blur-lg bg-opacity-80">
+        <h1 className="text-4xl font-extrabold text-gray-800">Login</h1>
+        <div className="mt-6">
+          <div className="text-left">
+            <label className="block text-gray-700 font-semibold">Email</label>
+            <input
+              value={emailId}
+              onChange={(e) => setEmailId(e.target.value)}
+              className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+              type="text"
+              placeholder="Enter your email Id"
+            />
+          </div>
 
-      <div className='text-center mt-5'>
-        <div className='email-section mt-4'>
-          <label htmlFor="email" className='text-lg text-left'>Email</label>
-          <br />
-          <input
-            value={emailId}
-            onChange={(e) => setEmailId(e.target.value)}
-            className='border-2 text-center border-gray-500 rounded-md px-7 py-1.5 mt-2'
-            type="text"
-            name="email"
-            placeholder='Enter your email Id'
-          />
+          <div className="mt-4 text-left">
+            <label className="block text-gray-700 font-semibold">Password</label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          {Error && <p className="text-red-600 mt-3 font-medium">{Error}</p>}
         </div>
 
-        <div className='password-section mt-4'>
-          <label htmlFor="password">Password</label>
-          <br />
-          <input
-            type="password"
-            placeholder='Enter your password'
-            className='border-2 border-gray-500 rounded-md px-7 py-1.5 mt-2'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <p className='text-red-600 mt-2'>{Error}</p>
+        <button
+          className="w-full mt-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all"
+          onClick={handleLoginSubmit}
+        >
+          Submit
+        </button>
       </div>
-
-      <button
-        className='px-5 py-1.5 border-2 border-gray-500 bg-purple-800 text-white mt-5 text-center ml-30 rounded-md hover:bg-blue-500'
-        onClick={handleLoginSubmit}
-      >
-        Submit
-      </button>
     </div>
   );
 };
 
 export default Login;
+
