@@ -31,7 +31,7 @@ const Feed = () => {
 
   return (
     feedData &&(
-    <div>
+    <div className='mt-5'>
      
         <FeedCard data = {feedData[0]} /> 
         
