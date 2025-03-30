@@ -46,7 +46,7 @@ const Connections = () => {
 
         return (
           <div key={_id} className="flex m-4 p-4 rounded-lg bg-base-300 w-1/2 mx-auto">
-            <img alt="photo" className="w-20 h-20 rounded-full object-cover" src={photoUrl} />
+            <img alt="photo" className="w-20 h-20 rounded-full object-cover" src={photoUrl || "https://img.freepik.com/premium-vector/silver-membership-icon-default-avatar-profile-icon-membership-icon-social-media-user-image-vector-illustration_561158-4215.jpg?semt=ais_hybrid"} />
             <div className="text-left mx-4">
               <h2 className="font-bold text-xl">{`${firstName} ${lastName}`}</h2>
               {age && gender && <p>{`${age}, ${gender}`}</p>}

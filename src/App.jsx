@@ -8,7 +8,9 @@ import Login from './components/Login'
 import appStore from './utils/appStore'
 import Profile from './components/Profile'
 import Connections from './components/Connections'
-import { BASEURL } from './utils/constants'
+import Requests from './components/Requests'
+
+
 
 
 
@@ -25,6 +27,7 @@ const App = () => {
       <Route path='/Profile' element={<Profile/>}></Route>
       <Route path='/login' element={<Login/>}></Route>
       <Route path='/connections' element={<Connections/>}></Route>
+      <Route path='/requests' element={<Requests/>}></Route>
 
       </Route>
       

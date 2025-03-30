@@ -51,6 +51,7 @@ const Navbar = () => {
           >
             <li><Link to="/profile" className="hover:bg-gray-800 p-2 rounded-md">Profile</Link></li>
             <li><Link to="/connections" className="hover:bg-gray-800 p-2 rounded-md">Connections</Link></li>
+            <li><Link to="/requests" className="hover:bg-gray-800 p-2 rounded-md">Received Requests</Link></li>
             <li>
               <button onClick={HandleLogout} className="hover:bg-red-600 p-2 rounded-md text-red-400 hover:text-white w-full text-left">Logout</button>
             </li>
