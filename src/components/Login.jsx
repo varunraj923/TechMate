@@ -67,7 +67,9 @@ const Login = () => {
       style={{ backgroundImage: `url(${LoginBg})` }}
     >
       <div className="bg-white p-8 rounded-2xl shadow-lg w-96 text-center backdrop-blur-lg bg-opacity-80">
-        <h1 className="text-4xl font-extrabold text-gray-800">Login</h1>
+        {signup ? (<h1 className="text-4xl font-extrabold text-gray-800">Sign Up</h1>) : (
+          <h1 className="text-4xl font-extrabold text-gray-800">Login</h1>
+        )}
         <div className="mt-6">
 
          { signup && (<div className="text-left my-2">
