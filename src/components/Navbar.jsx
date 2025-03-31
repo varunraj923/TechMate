@@ -27,7 +27,7 @@ const Navbar = () => {
         :(
        <button className='text-3xl font-bold text-white hover:text-gray-300 transition-all stroke-black'>TechMate</button>)}
       </div>
-      <div className="flex items-center gap-4">
+      { user&& (<div className="flex items-center gap-4">
         <input 
           type="text" 
           placeholder="Search..." 
@@ -41,7 +41,7 @@ const Navbar = () => {
               </div>
             ) : (
               <div className="w-10 h-10 flex items-center justify-center bg-gray-700 rounded-full text-white text-xl">
-                😎
+                <img src="https://cdn-icons-png.freepik.com/512/7718/7718888.png" alt="alternative default photo" />
               </div>
             )}
           </div>
@@ -57,7 +57,7 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-      </div>
+      </div>)}
     </div>
   );
 };

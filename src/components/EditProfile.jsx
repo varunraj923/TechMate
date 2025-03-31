@@ -1,136 +1,81 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react';
-import FeedCard from './FeedCard';
-import { BASEURL } from '../utils/constants';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userSlice';
+import { BASEURL } from '../utils/constants';
+import FeedCard from './FeedCard';
 
-
-const EditProfile = ({user}) => {
+const EditProfile = ({ user }) => {
     const dispatch = useDispatch();
 
-    const [firstName, setFirstName] = useState(user?.firstName);
-    const [lastName, setLastName ] = useState(user?.lastName);
-    const[age, setAge] = useState(user?.age);
-    const[about, setabout] = useState(user?.about);
-    const[photoUrl, setPhotoUrl] = useState(user?.photoUrl);
-    const[gender, setGender] = useState(user?.gender);
-    const[toast, setToast] = useState(false);
+    const [formData, setFormData] = useState({
+        firstName: user?.firstName || '',
+        lastName: user?.lastName || '',
+        age: user?.age || '',
+        about: user?.about || '',
+        photoUrl: user?.photoUrl || '',
+        gender: user?.gender || ''
+    });
 
-   
+    const [toast, setToast] = useState(false);
 
-    const SaveProfile = async()=>{
-        try{
-            const res = await axios.patch(BASEURL+"profile/edit", {
-                firstName, lastName, age, about, photoUrl, gender,
-            }, {withCredentials : true})
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
-           
+    const saveProfile = async () => {
+        try {
+            const res = await axios.patch(`${BASEURL}profile/edit`, formData, { withCredentials: true });
 
-            dispatch(addUser(res.data));
+            dispatch(addUser(res.data)); // Save updated user data
             setToast(true);
 
-            setTimeout(()=>{
-              setToast(false);
-
-            },3000)
-
-
-           
-        }
-
-        catch(err){
+            setTimeout(() => {
+                setToast(false);
+            }, 3000);
+        } catch (err) {
             console.error(err.message);
-
         }
-    }
+    };
 
-    
+    return (
+        <>
+            {toast && (
+                <div className="toast">
+                    <div className="alert alert-info">
+                        <span>Profile Updated Successfully!</span>
+                    </div>
+                </div>
+            )}
 
+            <div className="flex justify-center items-center h-screen">
+                <div className="card w-72">
+                    <div data-theme="bumblebee" className="card-body mt-20 shadow-2xl mx-7">
+                        <h2 className="card-title text-center text-2xl">Edit Profile</h2>
+                        
+                        {Object.keys(formData).map((key) => (
+                            <fieldset key={key} className="fieldset">
+                                <legend className="fieldset-legend">{key.charAt(0).toUpperCase() + key.slice(1)}</legend>
+                                <input 
+                                    type="text"
+                                    name={key}
+                                    className="input"
+                                    value={formData[key]}
+                                    onChange={handleChange}
+                                />
+                            </fieldset>
+                        ))}
 
+                        <button onClick={saveProfile} className="btn btn-primary">Save Profile</button>
+                    </div>
+                </div>
 
-    
+                {/* FeedCard Added Below */}
+                <FeedCard data={formData} />
+            </div>
+        </>
+    );
+};
 
-   
-     
+export default EditProfile;
 
-  return (
-
-
-    <>
-
-{toast &&(<div className="toast">
-  <div className="alert alert-info">
-    <span>Profile Updated Successfully!!</span>
-  </div>
-</div>
-)}
-<div  className="flex justify-center items-center h-screen ">
-
-
-
-
-  <div className="card  w-72 ">
-    <div data-theme="bumblebee" className="card-body mt-20 shadow-2xl mx-7">
-      <h2 className="card-title text-center text-2xl">Edit Profile</h2>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">FirstName</legend>
-        <input type="text" className="input"  value={firstName} onChange={(e)=>setFirstName(e.target.value)} />
-    
-      </fieldset>
-
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">LastName</legend>
-        <input type="text" className="input"  value={lastName} onChange={(e)=> setLastName(e.target.value)} />
-      
-      </fieldset>
-
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Age</legend>
-        <input type="text" className="input"  value={age} onChange={(e)=> setAge(e.target.value)} />
-      
-      </fieldset>
-
- 
-
-
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">about</legend>
-        <input type="text" className="input"   value={about} onChange={(e)=>setabout(e.target.value)}/>
-       
-      </fieldset>
-
-
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Gender</legend>
-        <input type="text" className="input"   value={gender} onChange={(e)=>setGender(e.target.value)}/>
-       
-      </fieldset>
-
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Photo Url</legend>
-        <input type="text" className="input"   value={photoUrl} onChange={(e)=>setPhotoUrl(e.target.value)}/>
-       
-      </fieldset>
-
-      <button onClick={SaveProfile} className="btn btn-primary">Save Profile</button>
-      
-    </div>
-  </div>
-
-  
-
-
-  <FeedCard data={{firstName, lastName, age, about, photoUrl , gender}}/>
-</div>
-
-
-
-</>
-
-
-  )
-}
-
-export default EditProfile

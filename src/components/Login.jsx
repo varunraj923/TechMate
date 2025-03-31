@@ -45,7 +45,7 @@ const Login = () => {
 
     dispatch(addUser(res.data));
 
-    navigate("/Profile");
+    navigate("/profile");
 
   }
 

@@ -1,19 +1,11 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BASEURL } from '../utils/constants';
 import { useDispatch } from 'react-redux';
 import { removeFeed } from '../utils/feedSlice';
 
 const FeedCard = ({ data }) => {
-  const [showToast, setShowToast] = useState(false);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (!data || Object.keys(data).length === 0) {
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
-    }
-  }, [data]);
 
   if (!data || Object.keys(data).length === 0) {
     return (
@@ -25,16 +17,13 @@ const FeedCard = ({ data }) => {
     );
   }
 
-  const { _id, firstName, lastName, photoUrl, age, gender, about } = data;
+  const { _id, firstName = "Unknown", lastName = "", photoUrl, age = "N/A", gender = "Unspecified", about = "" } = data;
 
-  const handleRequest = async (status, _id) => {
+  const handleRequest = async (status) => {
     try {
       await axios.post(`${BASEURL}request/send/${status}/${_id}`, {}, { withCredentials: true });
       dispatch(removeFeed(_id));
-    } 
-   
-    
-    catch (err) {
+    } catch (err) {
       console.error(`Error sending request: ${err.message}`);
     }
   };
@@ -76,7 +65,7 @@ const FeedCard = ({ data }) => {
         {/* Buttons */}
         <div className="w-full flex border-t border-gray-200">
           <button
-            onClick={() => handleRequest("ignored", _id)}
+            onClick={() => handleRequest("ignored")}
             className="flex-1 py-4 bg-white text-red-500 font-bold hover:bg-red-50 transition-colors duration-200 flex items-center justify-center gap-2"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -85,7 +74,7 @@ const FeedCard = ({ data }) => {
             Ignore
           </button>
           <button
-            onClick={() => handleRequest("interested", _id)}
+            onClick={() => handleRequest("interested")}
             className="flex-1 py-4 bg-white text-green-600 font-bold hover:bg-green-50 transition-colors duration-200 flex items-center justify-center gap-2"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,6 +89,7 @@ const FeedCard = ({ data }) => {
 };
 
 export default FeedCard;
+
 
 
 
