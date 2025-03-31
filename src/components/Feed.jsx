@@ -8,7 +8,9 @@ import Profile from './Profile';
 
 const Feed = () => {
   const dispatch = useDispatch();
-  const feedData = useSelector((store) => store.feed); // ✅ Defined at the top level
+  const feed = useSelector((store) => store.feed); // ✅ Defined at the top level
+  console.log(feed);
+  
 
 
 
@@ -18,6 +20,7 @@ const Feed = () => {
     
     try {
       const res = await axios.get(`${BASEURL}feed`, { withCredentials: true });
+      console.log(res);
      
       dispatch(addFeed(res?.data?.data));
     } catch (err) {
@@ -30,14 +33,14 @@ const Feed = () => {
   }, []);
 
   return (
-    feedData &&(
+    feed &&(
     <div className='mt-5'>
      
-        <FeedCard data = {feedData[0]} /> 
+        <FeedCard data = {feed[0]} /> 
         
     
     </div>
-
+    
   ));
 };
 
