@@ -11,7 +11,7 @@ const Requests = () => {
   const reviewRequest = async (status, _id) => {
     try {
       const res = axios.post(
-        BASEURL + "request/review/" + status + "/" + _id,
+        BASEURL + "/request/review/" + status + "/" + _id,
         {},
         { withCredentials: true }
       );
@@ -21,7 +21,7 @@ const Requests = () => {
 
   const fetchRequests = async () => {
     try {
-      const res = await axios.get(BASEURL + "user/requests/received", {
+      const res = await axios.get(BASEURL + "/user/requests/received", {
         withCredentials: true,
       });
 

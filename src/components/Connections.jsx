@@ -12,7 +12,7 @@ const Connections = () => {
 
   const fetchConnections = async () => {
     try {
-      const res = await axios.get(`${BASEURL}user/connections`, {
+      const res = await axios.get(`${BASEURL}/user/connections`, {
         withCredentials: true,
       });
       dispatch(addConnections(res.data.connectionRequests));

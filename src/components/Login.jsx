@@ -19,7 +19,7 @@ const Login = () => {
   const handleLoginSubmit = async () => {
     try {
       const response = await axios.post(
-        BASEURL + "login",
+        BASEURL + "/login",
         { emailId, password },
         { withCredentials: true }
       );

@@ -25,7 +25,7 @@ const EditProfile = ({ user }) => {
 
     const saveProfile = async () => {
         try {
-            const res = await axios.patch(`${BASEURL}profile/edit`, formData, { withCredentials: true });
+            const res = await axios.patch(`${BASEURL}/profile/edit`, formData, { withCredentials: true });
 
             dispatch(addUser(res.data)); // Save updated user data
             setToast(true);

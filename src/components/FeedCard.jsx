@@ -21,7 +21,7 @@ const FeedCard = ({ data }) => {
 
   const handleRequest = async (status) => {
     try {
-      await axios.post(`${BASEURL}request/send/${status}/${_id}`, {}, { withCredentials: true });
+      await axios.post(`${BASEURL}/request/send/${status}/${_id}`, {}, { withCredentials: true });
       dispatch(removeFeed(_id));
     } catch (err) {
       console.error(`Error sending request: ${err.message}`);
