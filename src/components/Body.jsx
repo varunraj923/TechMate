@@ -27,7 +27,7 @@ const Body = () => {
 
     try{
       
-        const res = await axios.get(BASEURL+"profile", {
+        const res = await axios.get(BASEURL+"/profile", {
           withCredentials : true,
         });
       

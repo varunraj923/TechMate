@@ -37,7 +37,7 @@ const Login = () => {
     try{
 
   
-    const res = await axios.post(BASEURL + "signup", {firstName, lastName, emailId, password,}, {
+    const res = await axios.post(BASEURL + "/signup", {firstName, lastName, emailId, password,}, {
       withCredentials : true,
     });
 
