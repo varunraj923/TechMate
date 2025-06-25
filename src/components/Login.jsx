@@ -48,39 +48,10 @@ const Login = () => {
     }
   };
 
-<<<<<<< HEAD
   const toggleAuthMode = () => {
     setSignUp((prev) => !prev);
     setError("");
   };
-=======
-    try{
-
-  
-    const res = await axios.post(BASEURL + "/signup", {firstName, lastName, emailId, password,}, {
-      withCredentials : true,
-    });
-
-    console.log(res.data);
-
-    dispatch(addUser(res.data));
-
-    navigate("/profile");
-
-  }
-
-  catch(err){
-    console.error(err.message);
-  }
-
-
-
-  }
-
-  const SignUpHandle = ()=>{
-   setsignUp(signup => !signup);
-  }
->>>>>>> e10c28ff4a0b4855921ee6056130e307afea86f3
 
   return (
     <>
@@ -134,7 +105,7 @@ const Login = () => {
 
       {/* About Section */}
       <AboutSec />
-      <Footer/>
+      <Footer />
     </>
   );
 };
@@ -154,4 +125,5 @@ const Input = ({ label, value, setValue, type = "text" }) => (
 );
 
 export default Login;
+
 
