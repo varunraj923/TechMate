@@ -7,6 +7,7 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import Navbar from './Navbar'
 import { BASEURL } from '../utils/constants'
 import { addUser } from '../utils/userSlice'
+import Header from "./Header";
 
 
 
@@ -49,7 +50,7 @@ FetchProfile();
   return (
     
    <>
-  <Navbar></Navbar>
+ <Header/>
    <Outlet></Outlet>
    
  

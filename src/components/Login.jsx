@@ -5,16 +5,20 @@ import { useDispatch } from "react-redux";
 import { BASEURL } from "../utils/constants";
 import { addUser } from "../utils/userSlice";
 import LoginBg from "../utils/LoginBg.jpg";
+import { FaArrowRight } from "react-icons/fa6";
+import Header from "../components/Header";
+import AboutSec from "./AboutSec";
+import Footer from "./Footer";
 
 const Login = () => {
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
-  const [ firstName, setFirstName] = useState("");
-  const[lastName, setLastName] = useState("");
-  const [Error, setError] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [error, setError] = useState("");
+  const [signup, setSignUp] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const[signup, setsignUp] = useState(false);
 
   const handleLoginSubmit = async () => {
     try {
@@ -23,120 +27,102 @@ const Login = () => {
         { emailId, password },
         { withCredentials: true }
       );
-      console.log(response.data);
       dispatch(addUser(response.data));
       navigate("/");
     } catch (err) {
-      console.error("Login Failed:", err);
       setError(err.response?.data || "Login failed. Please try again.");
     }
   };
 
-  const HandleSignUpSubmit = async()=>{
+  const handleSignUpSubmit = async () => {
+    try {
+      const res = await axios.post(
+        BASEURL + "/signup",
+        { firstName, lastName, emailId, password },
+        { withCredentials: true }
+      );
+      dispatch(addUser(res.data));
+      navigate("/profile");
+    } catch (err) {
+      setError(err.response?.data || "Signup failed.");
+    }
+  };
 
-    try{
-
-  
-    const res = await axios.post(BASEURL + "/signup", {firstName, lastName, emailId, password,}, {
-      withCredentials : true,
-    });
-
-    console.log(res.data);
-
-    dispatch(addUser(res.data));
-
-    navigate("/profile");
-
-  }
-
-  catch(err){
-    console.error(err.message);
-  }
-
-
-
-  }
-
-  const SignUpHandle = ()=>{
-   setsignUp(signup => !signup);
-  }
+  const toggleAuthMode = () => {
+    setSignUp((prev) => !prev);
+    setError("");
+  };
 
   return (
-    <div
-      className="flex items-center justify-center min-h-screen bg-cover bg-center"
-      style={{ backgroundImage: `url(${LoginBg})` }}
-    >
-      <div className="bg-white p-8 rounded-2xl shadow-lg w-96 text-center backdrop-blur-lg bg-opacity-80">
-        {signup ? (<h1 className="text-4xl font-extrabold text-gray-800">Sign Up</h1>) : (
-          <h1 className="text-4xl font-extrabold text-gray-800">Login</h1>
-        )}
-        <div className="mt-6">
+    <>
+      <Header />
 
-         { signup && (<div className="text-left my-2">
-            <label className="block text-gray-700 font-semibold">First Name</label>
-            <input
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
-              type="text"
-              placeholder="Enter your FirstName"
-            />
-          </div>)}
+      {/* Login Section */}
+      <section
+        className="min-h-screen bg-cover bg-center flex items-center justify-center px-4"
+        style={{ backgroundImage: `url(${LoginBg})` }}
+      >
+        <div className="w-full max-w-md p-8 md:p-10 rounded-2xl backdrop-blur-md bg-white/30 text-black shadow-lg">
+          <h2 className="text-3xl font-bold mb-6 text-center">
+            {signup ? "Sign Up" : "Login"}
+          </h2>
 
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              signup ? handleSignUpSubmit() : handleLoginSubmit();
+            }}
+            className="space-y-5"
+          >
+            {signup && (
+              <>
+                <Input label="First Name" value={firstName} setValue={setFirstName} />
+                <Input label="Last Name" value={lastName} setValue={setLastName} />
+              </>
+            )}
 
-          { signup && (<div className="text-left my-3">
-            <label className="block text-gray-700 font-semibold">Last Name</label>
-            <input
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
-              type="text"
-              placeholder="Enter your LastName"
-            />
-          </div>)}
+            <Input label="Email" type="email" value={emailId} setValue={setEmailId} />
+            <Input label="Password" type="password" value={password} setValue={setPassword} />
 
+            {error && <p className="text-red-600 text-sm font-semibold">{error}</p>}
 
-          
-          <div className="text-left my-3">
-            <label className="block text-gray-700 font-semibold">Email</label>
-            <input
-              value={emailId}
-              onChange={(e) => setEmailId(e.target.value)}
-              className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
-              type="text"
-              placeholder="Enter your email Id"
-            />
-          </div>
+            <button
+              type="submit"
+              className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg transition flex justify-center items-center gap-2 text-lg font-semibold"
+            >
+              Submit <FaArrowRight />
+            </button>
+          </form>
 
-          <div className="mt-4 text-left my-2">
-            <label className="block text-gray-700 font-semibold">Password</label>
-            <input
-              type="password"
-              placeholder="Enter your password"
-              className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-
-          <p onClick={SignUpHandle} className="mt-3 mr-30 hover:font-bold font-sans text-md w-full">
-  {!signup ? "New User? Register Now" : "Already registered? Sign In Now"}
-</p>
-
-
-          {Error && <p className="text-red-600 mt-3 font-medium">{Error}</p>}
+          <p
+            className="mt-4 text-center text-sm text-purple-900 font-semibold cursor-pointer hover:underline"
+            onClick={toggleAuthMode}
+          >
+            {signup ? "Already have an account? Login" : "New user? Create account"}
+          </p>
         </div>
+      </section>
 
-        <button
-          className="w-full mt-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all"
-          onClick={signup ? HandleSignUpSubmit : handleLoginSubmit}
-        >
-          Submit
-        </button>
-      </div>
-    </div>
+      {/* About Section */}
+      <AboutSec />
+      <Footer/>
+    </>
   );
 };
+
+// Reusable Input Component
+const Input = ({ label, value, setValue, type = "text" }) => (
+  <div>
+    <label className="block text-black font-semibold mb-1">{label}</label>
+    <input
+      type={type}
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      className="w-full px-4 py-2 border border-black/20 bg-white/50 text-black placeholder-black/60 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+      placeholder={`Enter your ${label.toLowerCase()}`}
+    />
+  </div>
+);
 
 export default Login;
 
